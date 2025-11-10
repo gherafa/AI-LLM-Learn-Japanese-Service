@@ -32,7 +32,7 @@ numpy
 
 ---
 
-## 🚀 Run the Server
+## Run the Server
 
 ```bash
 uvicorn app.main:app --reload
