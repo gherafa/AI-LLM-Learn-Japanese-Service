@@ -10,3 +10,5 @@ soundfile
 numpy
 evaluate
 jiwer
+Levenshtein
+ffmpeg

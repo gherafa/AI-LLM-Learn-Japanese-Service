@@ -1,15 +1,15 @@
 from pykakasi import kakasi
-
+from fastapi.responses import JSONResponse
 import whisper
 import Levenshtein
 
 from modules.utils import removeKanjiPunctuation
 
-kks = kakasi()
-kks.setMode("J", "a")
-kks.setMode("K", "a")
-kks.setMode("H", "a")
-converter = kks.getConverter()
+kakasiLib = kakasi()
+kakasiLib.setMode("J", "a")
+kakasiLib.setMode("K", "a")
+kakasiLib.setMode("H", "a")
+converter = kakasiLib.getConverter()
 
 model = whisper.load_model("base")
 
@@ -26,16 +26,18 @@ def processAndScore(audioPath: str, referenceText: str):
   refChars = removeKanjiPunctuation(referenceText)
   spokenChars = removeKanjiPunctuation(spoken_text)
 
-  # Compute Levenshtein distance
+  # Compute error distance
   distance = Levenshtein.distance("".join(refChars), "".join(spokenChars))
   max_len = max(len(refChars), len(spokenChars))
 
   score = max(0, 100 * (1 - distance / max_len))
 
-  return {
-      "spoken_text": spoken_text,
-      "reference_text": referenceText,
-      "ref_romaji": "".join(refChars),
-      "spoken_romaji": "".join(spokenChars),
-      "score": round(score, 2),
+  payloadResult = {
+    "spoken_text": spoken_text,
+    "reference_text": referenceText,
+    "ref_romaji": "".join(refChars),
+    "spoken_romaji": "".join(spokenChars),
+    "score": round(score, 2),
   }
+  
+  return JSONResponse(content=payloadResult)
