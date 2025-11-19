@@ -27,17 +27,13 @@ def processAndScore(audioPath: str, referenceText: str):
   spokenChars = removeKanjiPunctuation(spokenText)
   
   if "。" in referenceText:
-        refSplitResult = referenceText.split("。")[0] + "。"
-  else:
-      refSplitResult = referenceText
+    referenceText = referenceText.split("。")[0] + "。"
 
   if "。" in spokenText:
-      spokenSplitResult = spokenText.split("。")[0] + "。"
-  else:
-      spokenSplitResult = spokenText
-
-  refRomaji = convertToRomaji(refSplitResult)
-  spokenRomaji = convertToRomaji(spokenSplitResult)
+    spokenText = spokenText.split("。")[0] + "。"
+    
+  refRomaji = convertToRomaji(referenceText)
+  spokenRomaji = convertToRomaji(spokenText)
 
   # Compute error distance
   distance = Levenshtein.distance("".join(refChars), "".join(spokenChars))
