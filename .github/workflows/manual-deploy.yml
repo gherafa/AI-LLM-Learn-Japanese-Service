@@ -18,20 +18,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-
-    - name: Debug Secrets
-      run: |
-        echo "Actor: ${{ github.actor }}"
-        echo "Repository Owner: ${{ github.repository_owner }}"
-        echo "Username Secret: ${{ secrets.GHCR_USERNAME }}"
-        echo "Token set? $([[ -n "${{ secrets.GHCR_TOKEN }}" ]] && echo YES || echo NO)" 
  
     - name: Login to GHCR (Windows PowerShell)
       run: docker login ghcr.io -u "gherafa" -p "${{ secrets.GHCR_TOKEN }}"
       shell: powershell
-
-
 
     - name: Build Docker image
       run: |
